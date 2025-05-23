@@ -1,0 +1,173 @@
+main{
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.main_section{
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    
+}
+.main_section h1{
+    color: rgb(76, 76, 76);
+    font-size: 25px;
+}
+.main_section_div {
+    width: 90%;
+    height: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start; /* Prevents movement */
+    margin-top: 5%;
+}
+
+.main_section_div_top {
+    width: 20%;
+    min-height: 400px; /* Set a minimum height */
+    padding-right: 15px;
+}
+.progress_bar{
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.progress_bar_div {
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.progress_bar_div a {
+    width: 100%;
+    height: 50px;
+    display: flex;
+   
+    align-items: center;
+    background-color: #f4f4f4;
+    text-decoration: none;
+    color: rgb(76, 76, 76);
+    font-size: 17px;
+    font-weight: bold;
+    padding-left: 10px;
+    border-radius: 5px;
+    border: none;
+    transition: transform 0.3s ease; 
+}
+
+
+.progress_bar_div a.selected {
+    border: 3px solid gray; 
+}
+
+
+
+
+.progress {
+    width: 60%;
+    height: 60px;
+    background-color: grey;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50px;
+    margin-top: 50px;
+    font-family: "NotoSansGeorgianRegular";
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.green {
+    width: 7%;
+    position: absolute;
+    height: 60px;
+    border-top-left-radius: 50px;
+    border-bottom-left-radius: 50px;
+    background-color: green;
+    margin-left: -35%;
+}
+
+.main_section_div_bottom {
+    width: 80%;
+    display: grid;
+    grid-template-columns: auto;
+    gap: 20px;
+    margin-top: 0; /* Remove any margin causing movement */
+}
+
+.step-content {
+    width: 90%;
+    height: auto;
+    padding: 20px;
+    background: #f4f4f4;
+    border-radius: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    margin-left: 40px;
+    gap: 10px;
+    transition: 0.2s ease; 
+    color: rgb(76, 76, 76);
+    font-family: "NotoSansGeorgianRegular";
+    font-weight: bold;
+    cursor: pointer;
+}
+.step-content h4{
+    font-size: 18px;
+}
+.step-content p{
+    font-size: 14px;
+    font-weight: 300;
+}
+.step-content span{
+    font-size: 11px;
+    font-weight: lighter;
+}
+.step-content:hover{
+    background: #e9e9e9;
+    
+}
+
+.step-content img{
+    width: 90%;
+    height: auto;
+}
+.quiz_div{
+    width: 90%;
+    height: auto;
+    padding: 20px;
+    background: #CA8A04;
+    border-radius: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    margin-left: 40px;
+    gap: 10px;
+    transition: 0.2s ease; 
+    color: white;
+    font-family: "NotoSansGeorgianRegular";
+    font-weight: bold;
+    cursor: pointer;
+}
+.quiz_div img{
+    width: 90%;
+    height: auto;
+}

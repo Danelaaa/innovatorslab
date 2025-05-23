@@ -1,0 +1,197 @@
+/* Resetting some default styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    background-color: #f4f4f4;
+    color: #333;
+    margin: 0;
+    padding: 20px;
+}
+
+h1, h2 {
+    color: #2c3e50;
+    margin-bottom: 15px;
+}
+
+p {
+    margin-bottom: 15px;
+}
+
+a {
+    color: #3498db;
+    text-decoration: none;
+    margin: 10px;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Admin Dashboard Layout */
+h1 {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+#users-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+#users-table th, #users-table td {
+    padding: 12px;
+    text-align: left;
+    border: 1px solid #ddd;
+}
+
+#users-table th {
+    background-color: #3498db;
+    color: white;
+}
+
+#users-table td {
+    background-color: #fff;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    margin: 10px 0;
+}
+
+button:hover {
+    background-color: #2980b9;
+}
+
+.hidden {
+    display: none;
+}
+
+/* Create User Form Styles */
+#create-user-form-container {
+    margin-top: 20px;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+#create-user-form {
+    display: flex;
+    flex-direction: column;
+}
+
+#create-user-form label {
+    margin-bottom: 5px;
+}
+
+#create-user-form input,
+#create-user-form select {
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+#create-user-form button {
+    width: 200px;
+    margin-top: 10px;
+}
+
+/* Edit Book Form Styles */
+#edit-book-form-container {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 30px;
+}
+
+#edit-book-form {
+    display: flex;
+    flex-direction: column;
+}
+
+#edit-book-form label {
+    margin-bottom: 5px;
+}
+
+#edit-book-form input,
+#edit-book-form textarea,
+#edit-book-form select {
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+#edit-book-form button {
+    width: 200px;
+    margin-top: 10px;
+}
+
+/* Edit User Form Styles */
+#edit-user-form-container {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 30px;
+}
+
+#edit-user-form label {
+    margin-bottom: 5px;
+}
+
+#edit-user-form input,
+#edit-user-form select {
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+#edit-user-form button {
+    width: 200px;
+    margin-top: 10px;
+}
+
+/* Quiz List Styles */
+#quizList {
+    list-style-type: none;
+    padding: 0;
+}
+
+.quiz-card {
+    background-color: #fff;
+    padding: 20px;
+    margin: 10px 0;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.quiz-card h3 {
+    margin-bottom: 10px;
+}
+
+.quiz-card a {
+    color: #3498db;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.quiz-card a:hover {
+    text-decoration: underline;
+}
+

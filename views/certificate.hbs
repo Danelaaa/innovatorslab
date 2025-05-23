@@ -1,0 +1,33 @@
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<link rel="stylesheet" href="style/cetificate.css">
+
+<link rel="stylesheet" href="style/style.css">
+{{> header}}
+
+<main>
+    <div class="certificate-container">
+        <h2>{{name}}</h2>
+        <h3>Course: {{coursename}}</h3>
+        <p>Completed Steps: {{completedSteps}} / {{totalSteps}}</p>
+
+        {{#if message}}
+            <p class="message {{#if certificate}}success{{/if}}">{{message}}</p>
+        {{/if}}
+
+        {{#if certificate}}
+            <img id="certificate-image" src="/images/CERT.png" alt="Certificate">
+        {{else}}
+        <img id="certificate-image" src="/images/CERT.png" alt="Certificate">
+            
+            
+        {{/if}}
+<button id="generate-certificate">Generate Certificate</button>
+        <input type="hidden" id="userId" value="{{userId}}">
+        <input type="hidden" id="courseId" value="1">
+
+    </div>
+</main>
+
+{{> footer}}
+<script src="/script/certificate.js"></script>

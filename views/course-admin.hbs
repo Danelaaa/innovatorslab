@@ -1,0 +1,40 @@
+<h1>Available Courses</h1>
+
+{{#if courses}}
+    <ul>
+        {{#each courses}}
+            <li>
+                <strong>{{this.name}}</strong>
+                <p>{{this.description}}</p>
+                <a href="/courses/{{this.id}}/1"> <!-- Replace 1 with userId dynamically -->
+                    <button>Take Course</button>
+                </a>
+            </li>
+        {{/each}}
+    </ul>
+{{else}}
+    <p>No courses available.</p>
+{{/if}}
+
+<!-- Debugging -->
+<p>Courses data: {{courses}}</p>
+<h1>Available Courses</h1>
+
+{{#if courses}}
+    <ul>
+        {{#each courses}}
+            <li>
+                <strong>{{this.name}}</strong>
+                <p>{{this.description}}</p>
+                <a href="/courses/{{this.id}}/1"> <!-- Replace 1 with userId dynamically -->
+                    <button>Take Course</button>
+                </a>
+            </li>
+        {{/each}}
+    </ul>
+{{else}}
+    <p>No courses available.</p>
+{{/if}}
+
+<!-- Debugging -->
+<p>Courses data: {{courses}}</p>

@@ -1,0 +1,99 @@
+.main{
+    width: 100%;
+    height: auto;
+    margin-top: 5%;
+    display: flex;
+    justify-content: center;
+}
+.main_div{
+    width: 90%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.title_div{
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    gap: 10px;
+}
+.title_div h6{
+    font-weight: lighter;
+    font-size: 15px;
+    color: #ff006e;
+}
+.title_div h1{
+    font-weight: 900;
+    font-size: 35px;
+    color: black;
+}
+.title_div hr{
+    width: 100px;
+    height: 2px;
+    background-color: #0A0A0A80;
+    border: none;
+}
+.title_div p{
+    margin-top: 30px;
+    font-size: 15px;
+    font-weight: 300;
+    color: #0A0A0A80
+}
+.vision_div{
+    margin-top: 5%;
+    width: 80%;
+    height: auto;
+    display: flex;
+    flex-direction: row;
+}
+.vision_hr{
+    width: 95% !important;
+    height: 2px;
+    background-color: #0A0A0A80;
+    border: none;
+    margin-top: 50px;
+}
+.vision_div_left{
+    width: 50%;
+    height: auto;
+    gap: 5;
+}
+.vision_div_left span{
+    font-weight: lighter;
+    font-size: 15px;
+    color: #ff006e;
+}
+.vision_div_left h3{
+    font-size: 25px;
+    font-weight: 900;
+    color: black;
+    line-height: 2rem;
+    margin-top: 10px;
+}
+.vision_div_right{
+    width: 50%;
+    height: auto;
+    gap: 5;
+}
+.vision_div_right h3{
+    font-size: 25px;
+    font-weight: 900;
+    color: black;
+    line-height: 2rem;
+    margin-top: 10px;
+}
+.vision_div_right span{
+    font-weight: lighter;
+    font-size: 15px;
+    color: #ff006e;
+}
+.partners_div{
+    width: 100%;
+    height: auto;
+}

@@ -1,0 +1,35 @@
+<link rel="stylesheet" href="/style/quiz.css">
+<h1>All Quizzes</h1>
+<a href="/admin">Admin</a>
+<a href="/course_steps">Course Steps</a>
+<a href="/admin/presentations">Presentations</a>
+<a href="/create-quiz">Create a New Quiz</a>
+
+<table class="quiz-table">
+    <thead>
+        <tr>
+            <th>Quiz Title</th>
+            <th>Action</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#each quizzes}}
+        <tr>
+            <td>{{this.title}}</td>
+            <td>
+                <a href="/quiz/{{this.id}}" class="take-quiz-btn">Take Quiz</a>
+            </td>
+            <td>
+                <button class="delete-btn" onclick="deleteQuiz({{this.id}})">Delete</button>
+            </td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+
+<ul id="quizList">
+    <!-- Quizzes will be injected here by JavaScript -->
+</ul>
+
+<script src="/script/quizlist.js"></script>

@@ -1,0 +1,18 @@
+{
+    "en": {
+      "welcome": "Welcome",
+      "about": "About Us",
+      "contact": "Contact"
+    },
+    "ru": {
+      "welcome": "Добро пожаловать",
+      "about": "О нас",
+      "contact": "Контакт"
+    },
+    "ka": {
+      "welcome": "მოგესალმებით",
+      "about": "ჩვენ შესახებ",
+      "contact": "კონტაქტი"
+    }
+  }
+  

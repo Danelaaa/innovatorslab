@@ -1,0 +1,83 @@
+<link rel="stylesheet" href="style/cetificate.css">
+<link rel="stylesheet" href="style/style.css">
+{{> header}}
+
+<main>
+    {{#if course}}
+        <h1>{{course.name}}</h1>
+        <p>{{course.description}}</p>
+
+        <section class="main_section">
+            <div class="main_section_div">
+                <div class="main_section_div_top">
+                    {{#if steps}}
+                        <div class="progress_bar_div">
+                            {{#each steps}}
+                                <div class="step-container" data-step="{{step_number}}">
+                                    <a href="#" class="step {{status}}" 
+                                       data-step="{{step_number}}" 
+                                       data-presentation="{{presentation_file}}" 
+                                       data-quiz-id="{{quiz_id}}"
+                                       data-quiz-title="{{quiz_title}}">
+                                        {{step_number}}. Step 
+                                        {{#if (eq status "completed")}}✅ Completed{{/if}} 
+                                        {{#if (eq status "not complete")}}❌ Not Complete{{/if}} 
+                                    </a>
+
+                                    <label for="language-select-{{step_number}}">Language:</label>
+                                    <select class="language-select" id="language-select-{{step_number}}" data-step="{{step_number}}">
+                                        <option value="">--Select Language--</option>
+                                        <!-- Dynamically populated -->
+                                    </select>
+
+                                    <a class="pdf-download-link" id="pdf-link-{{step_number}}" href="#" target="_blank" style="display: none;">
+                                        📄 View Presentation
+                                    </a>
+                                </div>
+                            {{/each}}
+                        </div>
+                    {{/if}}
+                </div>
+
+                <div class="main_section_div_bottom">
+                    <p>Select a step to see content.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Certificate Section -->
+        <section class="certificate-container">
+            <h2>Certificate</h2>
+            <p>Completed Steps: {{completedSteps}} / {{totalSteps}}</p>
+
+            {{#if certificate}}
+                <p class="message success">✅ Certificate already generated!</p>
+                <a href="{{certificate}}" target="_blank">
+                    <img id="certificate-image" src="/images/CERT.png" alt="Certificate">
+                </a>
+                <a href="{{certificate}}" class="certificate-container-button" target="_blank">Download Your Certificate</a>
+            {{else}}
+                <p class="message error">❌ You must complete all steps to get the certificate!</p>
+                <img id="certificate-image" src="/images/CERT.png" alt="Certificate">
+                <button id="generate-certificate">Generate Certificate</button>
+            {{/if}}
+
+            <input type="hidden" id="userId" value="{{userId}}">
+            <input type="hidden" id="courseId" value="1">
+        </section>
+    {{else}}
+        <p>No course available.</p>
+    {{/if}}
+</main>
+
+{{> footer}}
+
+<!-- Scripts -->
+<script src="/script/mycourse.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="/script/certificate.js"></script>
+
+<!-- Pass presentation files from server to JS -->
+<script>
+    const presentationFiles = {{{presentationFiles}}};
+</script>

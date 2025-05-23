@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Steps</title>
+    <link rel="stylesheet" href="/style/course-steps.css">
+</head>
+<body>
+    <a href="/admin">Admin</a>
+    <a href="/admin-quiz">Quiz</a>
+    <a href="/admin/presentations">Presentations</a>
+    <div class="container">
+        <h2>📚 Course Steps Management</h2>
+
+        <form id="courseStepForm">
+            <label>Step Number:</label>
+            <input type="number" id="stepNumber" required>
+
+            <label>Presentation:</label>
+            <select id="presentationSelect" required></select>
+
+            <label>Quiz:</label>
+            <select id="quizSelect" required></select>
+
+            <button type="submit" id="addStepBtn">➕ Add Step</button>
+            <button type="button" id="updateStepBtn" style="display: none;">💾 Save Changes</button>
+        </form>
+
+        <h3>📋 Course Steps</h3>
+        <table id="courseStepsTable">
+            <thead>
+                <tr>
+                    <th>Step Number</th>
+                    <th>Presentation</th>
+                    <th>Quiz</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+
+    <script src="/script/course_steps.js"></script>
+</body>
+</html>

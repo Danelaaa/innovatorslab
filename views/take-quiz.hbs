@@ -1,0 +1,195 @@
+<style>
+    /* General Page Styling */
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f4f7fc;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+}
+
+/* Quiz Container */
+form {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 600px;
+    transition: all 0.3s ease-in-out;
+}
+
+/* Quiz Title */
+h1 {
+    text-align: center;
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* Question Styling */
+.question {
+    background: #f9f9f9;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    border-left: 5px solid #007bff;
+    transition: 0.3s;
+}
+
+/* Question Hover Effect */
+.question:hover {
+    background-color: #eef6ff;
+    border-left-color: #0056b3;
+}
+
+/* Question Text */
+.question p {
+    font-size: 16px;
+    font-weight: bold;
+    color: #444;
+    margin-bottom: 10px;
+}
+
+/* Answer Options */
+label {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    color: #333;
+    cursor: pointer;
+    padding: 8px 10px;
+    border-radius: 5px;
+    transition: background 0.3s ease-in-out;
+}
+
+label:hover {
+    background-color: #e0eaff;
+}
+
+/* Radio Button Styling */
+input[type="radio"] {
+    margin-right: 8px;
+    accent-color: #007bff;
+    transform: scale(1.1);
+}
+
+/* Submit Button */
+button {
+    background: linear-gradient(to right, #007bff, #0056b3);
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    display: block;
+    width: 100%;
+    transition: all 0.3s ease-in-out;
+    margin-top: 10px;
+}
+
+/* Button Hover Effect */
+button:hover {
+    background: linear-gradient(to right, #0056b3, #003c80);
+    transform: scale(1.02);
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 600px) {
+    form {
+        padding: 20px;
+        width: 90%;
+    }
+
+    h1 {
+        font-size: 20px;
+    }
+
+    .question p {
+        font-size: 14px;
+    }
+
+    button {
+        font-size: 14px;
+        padding: 10px;
+    }
+}
+
+</style>
+<h1>{{quiz.title}}</h1>
+
+<!-- Store userId in a data attribute -->
+<!-- Store userId in a data attribute -->
+<form id="quizForm" data-user-id="{{userId}}" data-course-id="{{courseId}}" data-quiz-id="{{quiz.id}}">
+    {{#each questions}}
+        <div class="question">
+            <p>{{this.question_text}}</p>
+            {{#each this.answers}}
+                <label>
+                    <input type="radio" name="question_{{../id}}" value="{{this.id}}">
+                    {{this.answer_text}}
+                </label><br>
+            {{/each}}
+        </div>
+    {{/each}}
+    
+    <button type="submit">Submit Quiz</button>
+</form>
+
+<script>
+document.getElementById("quizForm").addEventListener("submit", async function(event) {
+    event.preventDefault();
+
+    const form = event.target;
+    const userId = form.dataset.userId; // ✅ Read from dataset
+    const quizId = form.dataset.quizId || "{{quiz.id}}"; // Add dataset for quizId
+    const courseId = form.dataset.courseId;
+    const answers = [];
+
+    if (!userId || userId === "undefined") { // Fix missing userId check
+        alert("User ID is missing. Please log in.");
+        return;
+    }
+
+    document.querySelectorAll(".question").forEach(question => {
+        const questionId = question.querySelector("input").name.split("_")[1];
+        const selectedAnswer = question.querySelector("input:checked");
+        if (selectedAnswer) {
+            answers.push({ question_id: questionId, selected_answer_id: selectedAnswer.value });
+        }
+    });
+
+    if (answers.length === 0) {
+        alert("Please select at least one answer.");
+        return;
+    }
+
+    try {
+        const response = await fetch("/quiz/submit", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ user_id: userId, quiz_id: quizId, answers, course_id: courseId, step_number: 1 })
+        });
+
+        const data = await response.json();
+        console.log("Quiz submission response:", data);
+
+        if (data.error) {
+            alert("Error: " + data.error);
+        } else {
+            alert(`Quiz submitted successfully! Your score: ${data.score || "N/A"}`);
+            window.location.href = `/courses/1/${userId}`;
+        }
+    } catch (error) {
+        console.error("Error submitting quiz:", error);
+        alert("An error occurred while submitting the quiz.");
+    }
+});
+
+</script>

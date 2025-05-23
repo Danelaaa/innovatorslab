@@ -1,0 +1,29 @@
+<link rel="stylesheet" href="/style/style.css">
+{{>header}}
+
+<section class="news_section">
+    <!-- Category Filter -->
+    
+
+
+    <div class="news_section_div"> 
+        {{#each news}}
+            <div class="news-item">
+                <a href="/news/{{this.id}}">
+                    <div class="news_item_image">
+                        {{#if this.image}}
+                            <img src="{{this.image}}" width="300" />
+                        {{/if}}
+                    </div>
+                    <div class="news_item_title">
+                        <h2>{{this.title}}</h2>
+                        <p><strong>{{this.category_name}}</strong></p>
+                        <p>{{{this.shortContent}}}</p>
+                    </div>
+                </a>
+            </div>
+        {{/each}}
+    </div>
+</section>
+
+{{>footer}}

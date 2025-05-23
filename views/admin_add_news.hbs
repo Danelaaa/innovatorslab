@@ -1,0 +1,91 @@
+<link rel="stylesheet" href="/style/style.css">
+{{> header }}
+
+<section class="admin_news_section">
+
+    <h1>{{#if editNews}}Edit News{{else}}Add News{{/if}}</h1>
+
+    <form method="POST" action="{{#if editNews}}/news/admin/edit/{{editNews.id}}{{else}}/news/admin/add{{/if}}" enctype="multipart/form-data">
+        <input type="text" name="title" placeholder="Title" value="{{editNews.title}}" required /><br />
+
+        <textarea id="contentEditor" name="content" placeholder="Content">{{editNews.content}}</textarea><br />
+
+        {{#if editNews.image}}
+            <img src="{{editNews.image}}" width="150" /><br />
+        {{/if}}
+
+        <input type="file" name="image" accept="image/*" /><br />
+
+        <!-- Category Dropdown -->
+        <label for="category_id">Category:</label>
+        <select name="category_id" required>
+            <option value="">-- Select Category --</option>
+            {{#each categories}}
+                <option value="{{this.id}}"
+                    {{#if (eq this.id ../editNews.category_id)}}selected{{/if}}>
+                    {{this.name}}
+                </option>
+            {{/each}}
+        </select><br />
+
+        <button type="submit">{{#if editNews}}Update News{{else}}Add News{{/if}}</button>
+
+        {{#if editNews}}
+            <a href="/news/admin">Cancel Edit</a>
+        {{/if}}
+    </form>
+
+    <hr />
+
+    <h2>All News</h2>
+
+    <div class="admin_news_list">
+        {{#each newsList}}
+            <div class="admin_news_item">
+                <h3>{{this.title}}</h3>
+                <p><strong>Category:</strong> {{this.category_name}}</p>
+
+                <div class="news_content">
+                    {{{this.content}}}
+                </div>
+
+                {{#if this.image}}
+                    <img src="{{this.image}}" width="100" />
+                {{/if}}
+
+                <form method="GET" action="/news/admin">
+                    <input type="hidden" name="editId" value="{{this.id}}">
+                    <button type="submit">Edit</button>
+                </form>
+
+                <form method="POST" action="/news/admin/delete/{{this.id}}" onsubmit="return confirm('Are you sure you want to delete this news?');">
+                    <button type="submit">Delete</button>
+                </form>
+            </div>
+        {{/each}}
+    </div>
+
+</section>
+
+<!-- CKEditor 5 Classic Build -->
+<script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
+<script>
+    let editorInstance;
+
+    ClassicEditor
+        .create(document.querySelector('#contentEditor'))
+        .then(editor => {
+            editorInstance = editor;
+        })
+        .catch(error => {
+            console.error(error);
+        });
+
+    document.querySelector('form').addEventListener('submit', function (e) {
+        const content = editorInstance.getData().trim();
+        if (!content) {
+            alert('Please enter content.');
+            e.preventDefault();
+        }
+    });
+</script>

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Library</title>
+    <script src="https://kit.fontawesome.com/49878a5eb7.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="style/style.css"> <!-- Link to the external CSS file -->
+</head>
+<body>
+{{> header}}
+
+{{!-- <h1>{{translations.welcome}}</h1> --}}
+
+
+
+    <main>
+        <div class="img-slider">
+            <div class="slide active">
+              <img src="" alt="">
+              <div class="info">
+                <h2>Services</h2>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+              </div>
+            </div>
+            <div class="slide">
+              <img src="" alt="">
+              <div class="info">
+                <h2>Projects</h2>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+              </div>
+            </div>
+            <div class="slide">
+              <img src="" alt="">
+              <div class="info">
+                <h2>Team</h2>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+              </div>
+            </div>
+            <div class="slide">
+              <img src="" alt="">
+              <div class="info">
+                <h2>Clients</h2>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+              </div>
+            </div>
+            <div class="slide">
+              <img src="" alt="">
+              <div class="info">
+                <h2>Contact</h2>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+              </div>
+            </div>
+            <div class="navigation">
+              <div class="n_btn active"></div>
+              <div class="n_btn"></div>
+              <div class="n_btn"></div>
+              <div class="n_btn"></div>
+              <div class="n_btn"></div>
+            </div>
+          </div>
+       
+          <section class="about_section">
+            <div class="about_div">
+                <div class="about_div_title">
+                    <i class="fa-brands fa-slideshare fa-2xl"></i>
+                    <h3>Actionable Training</h3>
+                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit.</p>
+                </div>
+                <div class="about_div_title">
+                    <i class="fa-solid fa-puzzle-piece fa-2xl"></i>
+                    <h3>Interesting Quizzes</h3>
+                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit.</p>
+                </div>
+                <div class="about_div_title">
+                    <i class="fa-solid fa-cube fa-2xl"></i>
+                    <h3>Premium Material</h3>
+                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit.</p>
+                </div>
+            </div>
+          </section>
+
+          <section class="student_section">
+            <h1>What Our Students Have to Say</h1>
+            <div class="student_div">
+                <div class="student_title">
+                    <div class="student_title_div">
+                        <img src="./images/images.png" alt="">
+                        <div class="student_title_div_about">
+                            <h3>Kelvin Black</h3>
+                            <span>From Dallas, USA</span>
+                        </div>
+                    </div>
+                    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus aut quae veniam quo, sapiente illum fugit! Mollitia, tempore! Quod minus fugiat nulla veniam! Officia distinctio similique ad et ea dicta.</p>
+                </div>
+                <div class="student_title">
+                    <div class="student_title_div">
+                        <img src="./images/images.png" alt="">
+                        <div class="student_title_div_about">
+                            <h3>Kelvin Black</h3>
+                            <span>From Dallas, USA</span>
+                        </div>
+                    </div>
+                    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus aut quae veniam quo, sapiente illum fugit! Mollitia, tempore! Quod minus fugiat nulla veniam! Officia distinctio similique ad et ea dicta.</p>
+                </div>
+                <div class="student_title">
+                    <div class="student_title_div">
+                        <img src="./images/images.png" alt="">
+                        <div class="student_title_div_about">
+                            <h3>Kelvin Black</h3>
+                            <span>From Dallas, USA</span>
+                        </div>
+                    </div>
+                    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus aut quae veniam quo, sapiente illum fugit! Mollitia, tempore! Quod minus fugiat nulla veniam! Officia distinctio similique ad et ea dicta.</p>
+                </div>
+            </div>
+          </section>
+        
+        {{> partners}}
+        
+    </main>
+    
+    {{> footer}}
+    
+    <script src="/script/header.js"></script>
+    <script src="/script/home.js"></script> 
+    
+</body>
+</html>

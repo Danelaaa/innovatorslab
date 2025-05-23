@@ -1,0 +1,24 @@
+<h1>{{quiz.title}}</h1>
+
+<!-- Debugging: Show userId (Remove in production) -->
+<p>User ID: <span id="debugUserId">{{userId}}</span></p>
+
+<!-- Store IDs in data attributes -->
+<form id="quizForm" data-user-id="{{userId}}" data-course-id="{{courseId}}" data-quiz-id="{{quiz.id}}">
+    {{#each questions}}
+        <div class="question" data-question-id="{{this.id}}">
+            <p>{{this.question_text}}</p>
+            {{#each this.answers}}
+                <label>
+                    <input type="radio" name="question_{{../id}}" value="{{this.id}}">
+                    {{this.answer_text}}
+                </label><br>
+            {{/each}}
+        </div>
+    {{/each}}
+    
+    <button type="submit">Submit Quiz</button>
+</form>
+
+<!-- JavaScript File -->
+<script src="/script/quiz.js"></script>

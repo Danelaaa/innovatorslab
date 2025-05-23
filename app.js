@@ -1,0 +1,656 @@
+
+
+
+const express = require("express");
+const mysql = require("mysql2");
+const path = require("path");
+const dotenv = require("dotenv");
+const cookieParser = require("cookie-parser");
+const cors = require("cors");
+const session = require("express-session");
+const jwt = require("jsonwebtoken");
+const { engine } = require("express-handlebars"); // Correct way to import express-handlebars
+const Swal = require("sweetalert2");
+const admin = require("./routes/admin");
+const certificateRoutes = require("./routes/certificate");
+const fs = require("fs");
+const newsRoutes = require('./routes/news');
+const activitiesRouter = require('./routes/activities');
+const courseSteps = require('./routes//course-steps');
+const mycourseRoutes = require('./routes/mycourse');
+const courseRoutes = require('./routes/course');
+const statistics = require('./routes/statistics')
+const examRoutes = require('./routes/quizRoutes');
+const { verifyToken } = require('./middleware/authMiddleware');
+const hbs = require("hbs");
+const submitQuiz = require('./routes/submit-quiz')
+dotenv.config({ path: "./.env" });
+
+const app = express();
+
+// Database connection
+const db = mysql.createConnection({
+  host: process.env.DATABASE_HOST,
+  user: process.env.DATABASE_USER,
+  password: process.env.DATABASE_PASSWORD,
+  database: process.env.DATABASE,
+});
+
+// Connect to the database
+db.connect((error) => {
+  if (error) {
+    console.error("Database connection failed:", error.stack);
+    return;
+  }
+  console.log("Connected to the database.");
+});
+
+// Set up public directory
+
+
+app.use("/files", express.static(path.join(__dirname, "public/uploads/presentations")));
+app.use("/uploads", express.static(path.join(__dirname, "public/uploads"))); 
+app.use("/files", express.static(path.join(__dirname, "public/files")));
+const publicDirectory = path.join(__dirname, "public");
+app.use(express.static(publicDirectory));
+app.use("/pdf_files", express.static(path.join(__dirname, "public/files")));
+
+// Middleware setup
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(cookieParser());
+
+// Session setup
+app.use(
+  session({
+    secret: "123", // Use a secure key
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: false }, // Set to true if using HTTPS
+  })
+);
+
+// CORS setup
+app.use(
+  cors({
+    origin: "http://localhost:5000", // Adjust this if needed for frontend access
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true,
+  })
+);
+
+// Handlebars setup
+app.engine(
+    "hbs",
+    engine({
+      extname: ".hbs",
+      helpers: {
+        encodeURIComponent: function (str) {
+          return encodeURIComponent(str);
+        },
+        substring: function (str, start, end) {
+            return str.substring(start, end);
+        },
+        eq: (a, b) => a === b,
+        and: (a, b) => a && b,
+        
+                step_number_is_unlocked: function (status, options) {
+                    if (!options || typeof options.fn !== "function") {
+                        throw new Error("Handlebars helper 'step_number_is_unlocked' must be used as a block helper.");
+                    }
+                    
+                    if (status === "available") {
+                        return options.fn(this); // Renders content inside the block
+                    } else {
+                        return options.inverse(this); // Renders {{else}} content
+                    }
+                }
+      },
+      
+    })
+  );
+  app.set("view engine", "hbs");
+  app.set("views", path.join(__dirname, "views"));
+  
+  // ✅ Now, register partials after setting up the view engine
+  hbs.registerPartials(path.join(__dirname, "views", "partials"));
+
+// Register partials
+
+hbs.registerPartials(path.join(__dirname, "views", "partials"));
+
+const langFilePath = path.join(__dirname, "public", "lang.json");
+const translations = JSON.parse(fs.readFileSync(langFilePath, "utf-8"));
+
+app.use((req, res, next) => {
+    let lang = req.session.language || "en"; // Default to English
+    req.translations = translations[lang];
+    res.locals.translations = translations[lang]; // Pass to Handlebars
+    res.locals.lang = lang; // Store selected language globally
+    next();
+  });
+  
+  // Route to change language
+  app.get("/change-language/:lang", (req, res) => {
+    const selectedLang = req.params.lang;
+    if (translations[selectedLang]) {
+      req.session.language = selectedLang;
+    }
+    res.redirect("back");
+  });
+
+// Routes
+app.use("/certificates", express.static("public/certificates"));
+app.use('/', require('./routes/pages'));
+app.use('/', require('./routes/auth'));
+app.use('/login', require('./routes/login'));
+app.use('/admin', admin);
+app.use('/home', require('./routes/home'));
+app.use('/user', require('./routes/user'));
+app.use('/api/users', require('./routes/user'));
+app.use('/confirm-email', require('./routes/confirm-email'));
+app.use('/resend-code', require('./routes/auth'));
+app.use('/request-email-change', require('./routes/email'));
+app.use('/update-email', require('./routes/email'));
+app.use('/profile', require('./routes/profile'));
+
+app.use('/activities', activitiesRouter);
+
+
+app.use('/mycourse', mycourseRoutes);
+app.use('/courses', courseRoutes);
+// Change from '/' to '/quizzes'
+app.use('/certificate', certificateRoutes); // Change from '/' to '/certificates'
+app.use('/quiz', submitQuiz);
+app.use(statistics);
+app.use('/exam', examRoutes);
+app.use('/api', courseSteps);
+
+app.use('/news', newsRoutes);
+
+
+
+
+
+
+
+
+
+
+
+// app.delete('/quiz/:id', async (req, res) => {
+//     const quizId = req.params.id;
+
+//     try {
+//         const connection = db.promise();
+//         await connection.execute('DELETE FROM quizzes WHERE id = ?', [quizId]);
+//         res.json({ message: '✅ Quiz deleted successfully' });
+//     } catch (err) {
+//         console.error(err);
+//         res.status(500).json({ error: '❌ Database error' });
+//     }
+// });
+// app.get('/quiz/:id', verifyToken, async (req, res) => {
+//     const quizId = req.params.id;
+//     const userId = req.user.id; // ✅ Now `req.user` will have `id`
+//     const courseId = req.query.courseId || null;
+
+//     try {
+//         const connection = db.promise();
+//         const [quiz] = await connection.execute('SELECT * FROM quizzes WHERE id = ?', [quizId]);
+
+//         if (quiz.length === 0) {
+//             return res.status(404).render("error", { message: "Quiz not found" });
+//         }
+
+//         const [questions] = await connection.execute('SELECT * FROM questions WHERE quiz_id = ?', [quizId]);
+
+//         for (let question of questions) {
+//             const [answers] = await connection.execute('SELECT id, answer_text FROM answers WHERE question_id = ?', [question.id]);
+//             question.answers = answers;
+//         }
+
+
+//         res.render('quiz', { 
+//             quiz: quiz[0], 
+//             questions, 
+//             userId, // ✅ Now userId is correctly passed
+//             courseId 
+//         });
+
+//     } catch (err) {
+//         console.error(err);
+//         res.status(500).render("error", { message: "❌ Database error" });
+//     }
+// });
+
+app.post('/create-quiz', async (req, res) => {
+    const { title } = req.body;
+    const questions = req.body.questions || [];
+    const correct_answers = [];
+
+    for (let i = 0; i < questions.length; i++) {
+        correct_answers.push(req.body[`correct_answers_${i}`]);
+    }
+
+    const answers = questions.map((_, i) => req.body[`answers_${i}`] || []);
+
+    console.log('Received Data:', { title, questions, answers, correct_answers });
+
+    if (!title || questions.length !== 10) {
+        return res.render('create-quiz', { error: 'Please provide a title and exactly 10 questions.' });
+    }
+
+    try {
+        const connection = db.promise();
+
+        await connection.beginTransaction();
+
+        const [quizResult] = await connection.execute('INSERT INTO quizzes (title) VALUES (?)', [title]);
+        const quizId = quizResult.insertId;
+
+        for (let i = 0; i < 10; i++) {
+            const [questionResult] = await connection.execute(
+                'INSERT INTO questions (quiz_id, question_text) VALUES (?, ?)',
+                [quizId, questions[i]]
+            );
+            const questionId = questionResult.insertId;
+
+            for (let j = 0; j < 4; j++) {
+                await connection.execute(
+                    'INSERT INTO answers (question_id, answer_text, is_correct) VALUES (?, ?, ?)',
+                    [questionId, answers[i][j], correct_answers[i] == j]
+                );
+            }
+        }
+
+        await connection.commit();
+        res.redirect('/');
+    } catch (err) {
+        console.error(err);
+        res.render('create-quiz', { error: 'Database error.' });
+    }
+});
+
+app.get("/take-quiz/:id",verifyToken, async (req, res) => {
+    const quizId = req.params.id;
+
+    try {
+        const connection = db.promise();
+
+        // ✅ Fetch quiz details, including course_id
+        const [quiz] = await connection.execute(
+            'SELECT id, title, course_id FROM quizzes WHERE id = ?', [quizId]
+        );
+        if (quiz.length === 0) return res.status(404).send("Quiz not found");
+
+        const courseId = quiz[0].course_id;
+
+        // ✅ Fetch user ID from session or authentication system
+        const userId = req.user?.id || 1; // Replace with actual user authentication logic
+
+        // ✅ Fetch questions
+        const [questions] = await connection.execute('SELECT * FROM questions WHERE quiz_id = ?', [quizId]);
+
+        for (let question of questions) {
+            const [answers] = await connection.execute('SELECT id, answer_text FROM answers WHERE question_id = ?', [question.id]);
+            question.answers = answers;
+        }
+
+
+        res.render("take-quiz", { quiz: quiz[0], questions, userId, courseId }); // ✅ Pass userId & courseId to template
+    } catch (err) {
+        console.error(err);
+        return res.status(500).send("Database error");
+    }
+});
+
+
+
+
+// app.get('/quiz', (req, res) => {
+//     const token = req.cookies.token; // Get JWT token from cookies
+
+//     if (!token) {
+//         return res.redirect('/login'); // Redirect if not logged in
+//     }
+
+//     try {
+//         const decoded = jwt.verify(token, process.env.JWT_SECRET);
+//         res.render('quiz', { userId: decoded.id }); // Pass user ID to template
+//     } catch (err) {
+//         return res.redirect('/login');
+//     }
+// });
+
+
+app.get('/api/user', (req, res) => {
+    const token = req.cookies.jwt; // ✅ Read JWT from cookies
+
+    if (!token) {
+        return res.status(401).json({ error: 'Unauthorized: No token provided' });
+    }
+
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        res.json({ userId: decoded.id });
+    } catch (err) {
+        console.error("JWT Verification Error:", err.message);
+        return res.status(401).json({ error: 'Unauthorized: Invalid token' });
+    }
+});
+
+
+
+app.get('/admin/news', function(req, res) {
+    res.render('admin_add_news');
+});
+
+
+
+
+
+// 🎯 Get All Quizzes
+app.get('/quizzes', async (req, res) => {
+    try {
+        const connection = db.promise();
+        const [quizzes] = await connection.execute('SELECT * FROM quizzes');
+        res.json(quizzes);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: '❌ Database error' });
+    }
+});
+
+
+
+
+
+
+
+// 🎯 Delete a Quiz
+
+
+// app.get('/courses/:courseId/steps/:userId',verifyToken, async (req, res) => {
+//     const { courseId, userId } = req.params;
+
+//     const sql = `
+//         SELECT cs.step_number, cs.presentation_id, cs.quiz_id, 
+//                IFNULL(up.is_completed, FALSE) AS is_completed
+//         FROM course_steps cs
+//         LEFT JOIN user_progress up 
+//         ON cs.course_id = up.course_id 
+//         AND cs.step_number = up.step_number 
+//         AND up.user_id = ?
+//         WHERE cs.course_id = ?
+//         ORDER BY cs.step_number;
+//     `;
+
+//     db.query(sql, [userId, courseId], (err, results) => {
+//         if (err) return res.status(500).send(err);
+//         res.render('course-progress', { steps: results, courseId, userId });
+//     });
+// });
+
+
+
+// app.get('/course/:courseId', verifyToken, async (req, res) => {
+//     const courseId = req.params.courseId;
+//     const userId = req.session.userId; // Ensure userId is retrieved from session
+    
+//     console.log("User ID from session:", userId); // Debugging
+
+//     if (!userId) {
+//         return res.status(401).send("Unauthorized: User ID is missing!");
+//     }
+
+//     try {
+//         const [course] = await db.promise().query("SELECT * FROM courses WHERE id = ?", [courseId]);
+
+//         const [progress] = await db.promise().query(
+//             "SELECT step_number FROM user_progress WHERE user_id = ? AND course_id = ?",
+//             [userId, courseId]
+//         );
+
+//         console.log("User progress:", progress); // Debugging
+
+//         res.render('course', {
+//             course: course[0],
+//             steps: progress.map(p => p.step_number),
+//             userId
+//         });
+
+//     } catch (error) {
+//         console.error("Error fetching course data:", error);
+//         res.status(500).send("Server Error");
+//     }
+// });
+
+
+
+
+
+
+
+
+
+
+app.get('/:courseId/:userId',verifyToken, (req, res) => {
+    const { courseId, userId } = req.params;
+
+    if (!userId || !courseId) {
+        console.error("❌ Missing userId or courseId in request parameters.");
+        return res.status(400).json({ error: "Missing userId or courseId." });
+    }
+
+    console.log(`✅ Fetching course steps for Course ID: ${courseId}, User ID: ${userId}`);
+
+    const sql = `
+        SELECT cs.step_number, cs.presentation_id, cs.quiz_id, 
+               IFNULL(up.is_completed, FALSE) AS is_completed,
+               p.file_path AS presentation
+        FROM course_steps cs
+        LEFT JOIN user_progress up 
+        ON cs.course_id = up.course_id AND cs.step_number = up.step_number AND up.user_id = ?
+        LEFT JOIN presentations p ON cs.presentation_id = p.id
+        WHERE cs.course_id = ? AND (up.is_completed = TRUE OR cs.step_number = (
+            SELECT MIN(cs2.step_number) FROM course_steps cs2
+            LEFT JOIN user_progress up2 
+            ON cs2.course_id = up2.course_id AND cs2.step_number = up2.step_number AND up2.user_id = ?
+            WHERE cs2.course_id = ?
+        ))
+        ORDER BY cs.step_number;
+    `;
+
+    db.query(sql, [userId, courseId, userId, courseId], (err, stepsResults) => {
+        if (err) {
+            console.error("❌ Database Error:", err);
+            return res.status(500).json({ error: err.code, message: err.sqlMessage });
+        }
+
+        if (stepsResults.length === 0) {
+            console.warn("⚠ No steps found for this course.");
+            return res.status(404).json({ error: "No course steps found." });
+        }
+
+        console.log("✅ Course Steps Fetched:", stepsResults);
+
+        res.json({ success: true, steps: stepsResults });
+    });
+});
+// app.delete('/api/course-steps/:id', async (req, res) => {
+//     try {
+//         const { id } = req.params;
+//         const connection = db.promise();
+//         await connection.execute('DELETE FROM course_steps WHERE id = ?', [id]);
+
+//         res.json({ message: '✅ Course step deleted successfully' });
+//     } catch (err) {
+//         console.error(err);
+//         res.status(500).json({ error: '❌ Database error' });
+//     }
+// });
+// app.put('/api/course-steps/:id', async (req, res) => {
+//     try {
+//         const { id } = req.params;
+//         const { step_number, presentation_id, quiz_id } = req.body;
+
+//         const connection = db.promise();
+//         await connection.execute(
+//             'UPDATE course_steps SET step_number = ?, presentation_id = ?, quiz_id = ? WHERE id = ?',
+//             [step_number, presentation_id, quiz_id, id]
+//         );
+
+//         res.json({ message: '✅ Course step updated successfully' });
+//     } catch (err) {
+//         console.error(err);
+//         res.status(500).json({ error: '❌ Database error' });
+//     }
+// });
+
+app.get('/course-resources', async (req, res) => {
+    try {
+        const connection = db.promise();
+        const [course_steps] = await connection.execute(`
+            SELECT cs.id, cs.step_number, p.title AS presentation_title, q.title AS quiz_title
+            FROM course_steps cs
+            LEFT JOIN presentations p ON cs.presentation_id = p.id
+            LEFT JOIN quizzes q ON cs.quiz_id = q.id
+        `);
+        const [presentations] = await connection.execute('SELECT id, title FROM presentations');
+        const [quizzes] = await connection.execute('SELECT id, title FROM quizzes');
+
+        res.json({ course_steps, presentations, quizzes });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: '❌ Database error' });
+    }
+});
+// app.post('/api/course-steps', async (req, res) => {
+//     const { course_id, step_number, presentation_id, quiz_id } = req.body;
+//     try {
+//         await db.execute(
+//             'INSERT INTO course_steps (course_id, step_number, presentation_id, quiz_id) VALUES (?, ?, ?, ?)',
+//             [course_id, step_number, presentation_id, quiz_id]
+//         );
+//         res.json({ message: 'Course step added successfully' });
+//     } catch (error) {
+//         res.status(500).json({ message: 'Error adding course step', error });
+//     }
+// });
+
+
+
+
+
+
+
+
+
+// app.post('/submit-quiz', async (req, res) => {
+//     const { user_id, quiz_id, answers } = req.body;
+
+//     if (!user_id || !quiz_id || !answers || answers.length === 0) {
+//         return res.status(400).json({ error: 'Missing required fields' });
+//     }
+
+//     try {
+//         const connection = db.promise();
+
+//         // ✅ Check if user exists
+//         const [userCheck] = await connection.execute('SELECT id FROM users WHERE id = ?', [user_id]);
+//         if (userCheck.length === 0) {
+//             return res.status(400).json({ error: 'User not found. Please log in again.' });
+//         }
+
+//         await connection.beginTransaction();
+//         let correctCount = 0;
+
+//         for (const answer of answers) {
+//             const { question_id, selected_answer_id } = answer;
+
+//             // ✅ Validate answer exists
+//             const [result] = await connection.execute(
+//                 'SELECT is_correct FROM answers WHERE id = ?',
+//                 [selected_answer_id]
+//             );
+
+//             if (result.length === 0) {
+//                 throw new Error('Invalid answer selection');
+//             }
+
+//             const isCorrect = result[0].is_correct;
+
+//             // ✅ Insert user answer
+//             await connection.execute(
+//                 'INSERT INTO user_answers (user_id, quiz_id, question_id, selected_answer_id, is_correct) VALUES (?, ?, ?, ?, ?)',
+//                 [user_id, quiz_id, question_id, selected_answer_id, isCorrect]
+//             );
+
+//             if (isCorrect) correctCount++;
+//         }
+
+//         // ✅ Calculate and Save Score
+//         const score = ((correctCount / answers.length) * 100).toFixed(2);
+
+//         await connection.execute(
+//             'INSERT INTO user_scores (user_id, quiz_id, score) VALUES (?, ?, ?)',
+//             [user_id, quiz_id, score]
+//         );
+
+//         await connection.commit();
+
+//         res.json({ message: 'Quiz submitted successfully', score });
+//     } catch (err) {
+//         console.error(err);
+//         await connection.rollback();
+//         res.status(500).json({ error: 'Database error' });
+//     }
+// });
+
+
+
+
+app.get('/api/user-quiz-results/:user_id/:quiz_id', async (req, res) => {
+    const { user_id, quiz_id } = req.params;
+    console.log(user_id,quiz_id)
+    try {
+        const results = await db.promise().query(
+            'SELECT * FROM user_scores WHERE user_id = ? AND quiz_id = ?',
+            [user_id, quiz_id]
+        );
+
+        res.json(results[0]); // Return only the result set
+
+    } catch (err) {
+        console.error('❌ Database error:', err);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Start the server on port 5000 and listen on all network interfaces
+const PORT = process.env.PORT || 5001;
+app.listen(PORT, '0.0.0.0', () => {
+    console.log(`Server started on http://0.0.0.0:${PORT}`);
+});

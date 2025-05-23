@@ -1,0 +1,40 @@
+<!-- user-quiz-results.hbs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Results</title>
+</head>
+<body>
+    <h1>Quiz Results for User ID: {{user_id}}, Quiz ID: {{quiz_id}}</h1>
+
+    {{#if results.length}}
+    <table>
+        <thead>
+            <tr>
+                <th>Question</th>
+                <th>Your Answer</th>
+                <th>Correct</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each results}}
+            <tr>
+                <td>{{question_text}}</td>
+                <td>{{selected_answer}}</td>
+                <td>{{#if is_correct}}✔️{{else}}❌{{/if}}</td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+    {{else}}
+    <p>No results found for this quiz.</p>
+    {{/if}}
+<div id="quizResultsContainer"></div>
+
+    <button onclick="goBack()">Go Back</button>
+
+    <script src="/script/quizResults.js"></script>
+</body>
+</html>

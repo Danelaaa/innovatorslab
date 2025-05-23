@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="style/admin.css">
+</head>
+<body>
+    <h1>Admin Dashboard</h1>
+
+    {{!-- <a href="/admin">Admin</a> --}}
+    <a href="/statistics">Statistics</a>
+    <a href="/course_steps">Course Steps</a>
+    <a href="/admin-quiz">Quiz</a>
+    <a href="/admin/presentations">Presentations</a>
+    <a href="/news/admin">News Add</a>
+    {{!-- <button id="courseProgressBtn" class="btn">Go to Course Progress</button> --}}
+      <!-- This helps check if userId is actually passed -->
+{{!-- <p>Course ID: {{courseId}}</p>
+<p>User ID: {{userId}}</p> 
+
+ {{#if courseId}}
+    {{#if userId}}
+        <a href="/courses/{{courseId}}/{{userId}}">
+            <button class="btn">Go to Course</button>
+        </a>
+    {{else}}
+        <p style="color: red;">⚠️ Error: User ID is missing.</p>
+    {{/if}}
+{{else}}
+    <p style="color: red;">⚠️ Error: Course ID is missing.</p>
+{{/if}}
+
+    <a href="/courses/{{course.id}}/{{userId}}">
+    <button class="btn admin-btn">Go to Admin Panel</button>
+</a> --}}
+
+
+    
+
+
+
+
+
+    <button id="show-create-form">Create New User</button>
+
+    <h2>Users List</h2>
+    <table id="users-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- User rows will be added here -->
+        </tbody>
+    </table>
+
+    <div id="create-user-form-container" class="hidden" enctype="application/x-www-form-urlencoded" method="POST" action="/admin/users/create">
+    <h2>Create User</h2>
+    <form id="create-user-form">
+        <label for="create-name">Name:</label>
+        <input type="text" id="create-name" name="name" required>
+        <br>
+        
+        <label for="create-email">Email:</label>
+        <input type="email" id="create-email" name="email" required>
+        <br>
+        
+        <label for="create-password">Password:</label>
+        <input type="password" id="create-password" name="password" required>
+        <br>
+        
+        <label for="create-role">Role:</label>
+        <select id="create-role" name="role_id" required>
+            <option value="2">User</option> <!-- Use role_id value -->
+            <option value="1">Admin</option> <!-- Use role_id value -->
+        </select>
+        <br>
+        
+        <button type="submit">Create User</button>
+        <p id="create-message"></p>
+    </form>
+</div>
+
+
+   
+<div id="edit-user-form-container" class="hidden">
+    <form id="edit-user-form">
+        <input type="hidden" id="user-id" name="id">
+        
+        <label for="user-name">Name:</label>
+        <input type="text" id="user-name" name="name" required>
+        
+        <label for="user-email">Email:</label>
+        <input type="email" id="user-email" name="email" required>
+        
+        <label for="user-role">Role:</label>
+        <select id="user-role" name="role_id" required>
+            <option value="2">User</option> <!-- Updated to use role_id -->
+            <option value="1">Admin</option> <!-- Updated to use role_id -->
+        </select>
+        
+        <button type="submit">Update User</button>
+    </form>
+    <div id="update-message"></div>
+</div>
+
+
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const userId = "{{userId}}";  // Get userId passed from server
+        const courseId = "{{courseId}}"; // Get course ID
+
+        console.log("🚀 Debug - User ID:", userId);
+        console.log("🚀 Debug - Course ID:", courseId);
+
+        document.querySelectorAll(".take-quiz-btn").forEach(button => {
+            button.addEventListener("click", (event) => {
+                event.preventDefault();
+                const quizId = button.getAttribute("data-quiz-id");
+
+                if (quizId && userId) {
+                    window.location.href = `/quiz/${quizId}?userId=${encodeURIComponent(userId)}&courseId=${encodeURIComponent(courseId)}`;
+                } else {
+                    alert("User ID or Quiz ID is missing!");
+                }
+            });
+        });
+    });
+</script>
+  
+    <script src="/script/admin.js"></script>
+</body>
+</html>

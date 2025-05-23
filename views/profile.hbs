@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    <!-- Include Toastr.js CSS and JS via CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="/style/style.css">
+</head>
+<body>
+    {{{toastr}}}
+    {{>header}}
+    <main class="profile_main">
+        <div class="profile_div">
+            <div class="profile_div_left">
+                <div class="div_bar">
+                    <button id="showPersonalInfoButton" class="active">
+                        <img src="/icons/person_24dp_5985E1_FILL0_wght400_GRAD0_opsz24.svg" alt=""> Personal Information
+                    </button> 
+                </div>
+                <div class="div_bar">
+                    <button id="showChangePasswordButton">
+                        <img src="/icons/lock_open_24dp_5985E1_FILL0_wght400_GRAD0_opsz24.png" alt=""> Change Password 
+                    </button>
+                </div>
+                <div class="div_bar">
+                    <button id="showChangeEmailButton">
+                        <img src="/icons/mail_lock_24dp_5985E1_FILL0_wght400_GRAD0_opsz24.png" alt=""> Change Email
+                    </button>
+                </div>
+                <div class="div_bar">
+                    <button id="showLogoutButton">
+                        <img src="/icons/exit_to_app_24dp_5985E1_FILL0_wght400_GRAD0_opsz24.png" alt=""> Log Out
+                    </button>
+                </div>
+            </div>
+
+            <div class="profile_div_right" id="profile_div_right">
+                {{> personal_info}} 
+            </div>
+            <div class="profile_div_right" id="profile_div_right_second" style="display: none;">
+                {{> changepassword}} 
+            </div>
+            <div class="profile_div_right" id="profile_div_right_third" style="display: none;">
+                {{> changeEmail}} 
+            </div>
+        </div>
+    </main>
+  
+<!-- Include Toastr.js CSS and JS via CDN -->
+
+    <script src="/script/profile.js"></script>
+</body>
+</html>

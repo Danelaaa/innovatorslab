@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Course Progress</title>
+</head>
+<body>
+    <h1>Course Progress</h1>
+    <ul>
+        {{#each steps}}
+            <li>
+                Step {{this.step_number}}:
+                <strong>{{#if this.is_completed}} ✅ Completed {{else}} ❌ Not Completed {{/if}}</strong>
+            </li>
+        {{/each}}
+    </ul>
+</body>
+</html>

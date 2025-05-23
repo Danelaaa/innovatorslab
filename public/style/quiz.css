@@ -1,0 +1,103 @@
+/* General Page Styling */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 20px;
+    text-align: center;
+}
+
+/* Headings */
+h1 {
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* Create Quiz Button */
+a {
+    display: inline-block;
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+a:hover {
+    background-color: #0056b3;
+}
+
+/* Table Styling */
+.quiz-table {
+    width: 80%;
+    margin: 20px auto;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center; /* Center all table content */
+}
+
+.quiz-table th,
+.quiz-table td {
+    padding: 15px;
+    border: 1px solid #ddd;
+    text-align: center; /* Center text in table */
+    vertical-align: middle; /* Ensure vertical centering */
+}
+
+.quiz-table th {
+    background-color: #007bff;
+    color: white;
+    text-align: center;
+}
+
+/* Take Quiz Button */
+.take-quiz-btn {
+    padding: 10px 15px;
+    background-color: #28a745;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    display: inline-block;
+}
+
+.take-quiz-btn:hover {
+    background-color: #218838;
+}
+
+/* Delete Button */
+.delete-quiz-btn {
+    padding: 10px 15px;
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    display: inline-block;
+}
+
+.delete-quiz-btn:hover {
+    background-color: #c82333;
+}
+#quizList{
+    gap: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+#quizList li{
+    width: 80%;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    background: white;
+    list-style-type: none;
+    text-align: center;
+}

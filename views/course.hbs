@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{course.name}} - Course Progress</title>
+    <link rel="stylesheet" href="/css/course.css">
+</head>
+<body>
+    <h1>{{course.name}}</h1>
+    <p>{{course.description}}</p>
+
+    <div class="progress-bar">
+        {{#each steps}}
+            <div class="step">
+                <h2>Step {{step_number}}</h2>
+
+                {{#if (eq status "completed")}}
+                    <p>✅ Completed</p>
+                {{else}}
+                    <p>🔄 Not Completed</p>
+                {{/if}}
+
+                {{#if presentation}}
+                    <a href="{{presentation}}" target="_blank">
+                        <button class="btn">📄 View Presentation</button>
+                    </a>
+                {{/if}}
+
+                {{#if quiz_id}}
+                    <button class="btn take-quiz-btn" data-quiz-id="{{quiz_id}}">Take Quiz</button>
+                {{/if}}
+            </div>
+        {{/each}}
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const userId = "{{userId}}"; 
+
+            if (!userId || userId.trim() === "") {
+                console.error("User ID is missing!");
+                return;
+            }
+
+            document.querySelectorAll(".take-quiz-btn").forEach(button => {
+                button.addEventListener("click", () => {
+                    const quizId = button.getAttribute("data-quiz-id");
+                    
+                    if (quizId) {
+                        const url = `/take-quiz/${quizId}?userId=${encodeURIComponent(userId)}`;
+                        console.log("Redirecting to:", url);
+                        window.location.href = url;
+                    } else {
+                        alert("Quiz ID is missing!");
+                    }
+                });
+            });
+
+            const quizForm = document.getElementById("quiz-form");
+            if (quizForm) {
+                quizForm.addEventListener("submit", (event) => {
+                    event.preventDefault();
+
+                    const formData = new FormData(quizForm);
+                    formData.append("user_id", userId);
+
+                    fetch("/submit-quiz", {
+                        method: "POST",
+                        body: formData,
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.error) {
+                            alert("Error: " + data.error);
+                        } else {
+                            alert("Quiz submitted successfully!");
+                            location.reload();
+                        }
+                    })
+                    .catch(error => console.error("Error submitting quiz:", error));
+                });
+            }
+        });
+    </script>
+
+</body>
+</html>

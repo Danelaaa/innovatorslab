@@ -1,0 +1,44 @@
+
+    <link rel="stylesheet" href="/style/statistics.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<body>
+    <a href="/admin">Admin</a>
+    <a href="/course_steps">Course Steps</a>
+    <a href="/admin-quiz">Quiz</a>
+    <a href="/admin/presentations">Presentations</a>
+    <h2>📊 Platform Statistics</h2>
+    <div class="stats-container">
+        <div class="stat-box">👤 Total Users: <span id="total_users">0</span></div>
+        <div class="stat-box">🆕 New Users This Month: <span id="new_users_this_month">0</span></div>
+        <div class="stat-box">📚 Total Steps: <span id="total_courses">0</span></div>
+        <div class="stat-box">🎓 Certifications Issued: <span id="total_certifications">0</span></div>
+        <div class="stat-box">📝 Total Quizzes Taken: <span id="total_quizzes">0</span></div>
+        <div class="stat-box">✅ Passed Quizzes: <span id="quiz_passed">0</span></div>
+        <div class="stat-box">❌ Failed Quizzes: <span id="quiz_failed">0</span></div>
+        <div class="stat-box">🏆 Top Scorer Avg Score: <span id="top_scorer_avg_score">0</span></div>
+        <div class="stat-box">⏳ Avg Quiz Completion Time: <span id="avg_quiz_completion_time">0</span> min</div>
+        <div class="stat-box">📈 Most Popular Quiz ID: <span id="most_popular_quiz">0</span></div>
+    </div>
+    <div class="charts">
+        <div class="chart-container">
+            <h3>Quiz Results Overview</h3>
+            <canvas id="quizChart"></canvas>
+        </div>
+
+        <div class="chart-container">
+            <h3>User Growth Over Time</h3>
+            <canvas id="userGrowthChart"></canvas>
+        </div>
+
+        <div class="chart-container">
+            <h3>Top Performing Quizzes</h3>
+            <canvas id="topQuizChart"></canvas>
+        </div>
+    </div>
+    
+
+
+    <script src="/script/statistics.js"></script>
+</body>
+
