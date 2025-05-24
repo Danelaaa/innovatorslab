@@ -20,10 +20,20 @@
             <label>Presentation:</label>
             <select id="presentationSelect" required></select>
 
+            <label>Language:</label>
+            <select id="languageSelect" required>
+                <option value="">Select Language</option>
+                <option value="1">Georgian</option>
+                <option value="2">Turkish</option>
+                <option value="3">Armenian</option>
+                <option value="4">Bulgarian</option>
+                <option value="5">English</option>
+            </select>
+
             <label>Quiz:</label>
             <select id="quizSelect" required></select>
 
-            <button type="submit" id="addStepBtn">➕ Add Step</button>
+            <button type="submit" id="addStepBtn">➕ Add Step+Language</button>
             <button type="button" id="updateStepBtn" style="display: none;">💾 Save Changes</button>
         </form>
 
@@ -33,6 +43,7 @@
                 <tr>
                     <th>Step Number</th>
                     <th>Presentation</th>
+                    <th>Language</th>
                     <th>Quiz</th>
                     <th>Actions</th>
                 </tr>
